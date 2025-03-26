@@ -1,4 +1,4 @@
-# my-vue-app
+# Recipe web app
 
 ## Project setup
 ```

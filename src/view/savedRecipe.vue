@@ -11,9 +11,12 @@
           class="recipe-card"
           @click="openModal(recipe)"
         >
-          <img :src="recipe.image" :alt="recipe.title">
+          <img :src="recipe.imageUrl" :alt="recipe.title">
           <h3>{{ recipe.title }}</h3>
-          <p>{{ recipe.description.substring(0, 100) }}...</p>
+          <h3>Ingredients</h3>
+          <p>{{ recipe.ingredients.substring(0, 100) }}</p>
+          <h3>Instructions</h3>
+          <p>{{ recipe.instructions.substring(0, 100) }}</p>
         </div>
       </div>
       <p v-else>No saved recipes yet!</p>
@@ -23,9 +26,12 @@
     <div v-if="selectedRecipe" class="modal">
       <div class="modal-content">
         <span class="close" @click="selectedRecipe = null">&times;</span>
-        <img :src="selectedRecipe.image" :alt="selectedRecipe.title">
+        <img :src="selectedRecipe.imageUrl" :alt="selectedRecipe.title">
         <h2>{{ selectedRecipe.title }}</h2>
-        <p>{{ selectedRecipe.description }}</p>
+        <h3>Ingredients</h3>
+        <p>{{ selectedRecipe.ingredients }}</p>
+        <h3>Instructions</h3>
+        <p>{{ selectedRecipe.instructions }}</p>
         <button @click="removeRecipe(selectedRecipe)">Remove</button>
       </div>
     </div>
@@ -35,7 +41,7 @@
 <script>
 import { auth } from '../firebase'
 import { onAuthStateChanged } from 'firebase/auth'
-import { getFirestore, doc, setDoc, arrayRemove } from 'firebase/firestore'
+import { getFirestore, doc, setDoc, arrayRemove, getDoc } from 'firebase/firestore'
 import Navbar from '../NavBar.vue'
 
 export default {
@@ -55,13 +61,21 @@ export default {
   },
   methods: {
     async loadSavedRecipes() {
-      if (this.user) {
-        // Load from Firestore
-        // Implement this
-      } else {
-        this.savedRecipes = JSON.parse(localStorage.getItem('savedRecipes') || [])
-      }
-    },
+  if (this.user) {
+    const db = getFirestore()
+    const userDocRef = doc(db, 'users', this.user.uid)
+    const userDoc = await getDoc(userDocRef)
+    
+    if (userDoc.exists()) {
+      this.savedRecipes = userDoc.data().savedRecipes || []
+    } else {
+      this.savedRecipes = []
+    }
+  } else {
+    const saved = localStorage.getItem('savedRecipes')
+    this.savedRecipes = saved ? JSON.parse(saved) : []
+  }
+},
     openModal(recipe) {
       this.selectedRecipe = recipe
     },

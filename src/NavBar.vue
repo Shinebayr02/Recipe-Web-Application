@@ -8,7 +8,7 @@
         <div class="sidebar-content">
           <router-link to="/" class="nav-link">Home</router-link>
           <router-link to="/saved" class="nav-link">Saved Recipes</router-link>
-          
+          <router-link to="/addrecipe" class="nav-link">My Recipe</router-link>
           <!-- User Section -->
           <div class="auth-section">
             <div v-if="user" class="user-profile">

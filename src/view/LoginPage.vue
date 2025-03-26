@@ -92,6 +92,7 @@ export default {
 .login-button {
   display: flex;
   align-items: center;
+  margin-left: 85px;
   justify-content: center;
   background-color: #4a90e2;
   color: white;
@@ -101,6 +102,7 @@ export default {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  
 }
 
 .login-button:hover {
