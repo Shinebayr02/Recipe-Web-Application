@@ -26,13 +26,24 @@ export default {
     };
   },
   mounted() {
-    auth.onAuthStateChanged((user) => {
-      this.user = user;
-      if (user && this.$route.path === "/login") {
+    
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      this.user = {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+      };
+      
+      if (this.$route.path === "/login") {
         this.$router.replace("/recipes");
+
       }
-    });
-  },
+    } else {
+      this.user = null;
+    }
+  });
+},
   methods: {
     async loginWithFacebook() {
       const provider = new FacebookAuthProvider();

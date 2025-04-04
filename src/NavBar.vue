@@ -12,7 +12,7 @@
           <!-- User Section -->
           <div class="auth-section">
             <div v-if="user" class="user-profile">
-              <img :src="user.photoURL || defaultProfilePic" class="profile-pic" />
+              <img :src="user.picture || defaultProfilePic" class="profile-pic" />
               <span class="username">{{ user.displayName || user.email }}</span>
               <button class="logout-btn" @click="confirmLogout">Logout</button>
               

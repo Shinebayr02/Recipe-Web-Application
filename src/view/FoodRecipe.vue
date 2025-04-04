@@ -64,6 +64,7 @@ import Navbar from '../NavBar.vue';
 export default {
   components: { Navbar },
   data() {
+    
     return {
       user: null,
       selectedRecipe: null,
@@ -75,6 +76,7 @@ export default {
   computed: {
     categories() {
       return [...new Set(this.recipes.map(recipe => recipe.category))];
+
     },
     filteredRecipes() {
       return this.recipes.filter(recipe => {
@@ -84,6 +86,7 @@ export default {
       });
     }
   },
+  
   async created() {
     onAuthStateChanged(auth, (user) => {
       this.user = user;
@@ -93,6 +96,7 @@ export default {
   },
   methods: {
     async fetchRecipes() {
+      console.log("User object:", this.user);
       const db = getFirestore();
       const querySnapshot = await getDocs(collection(db, 'recipes'));
       this.recipes = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
